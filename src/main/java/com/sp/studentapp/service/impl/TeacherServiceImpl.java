@@ -77,4 +77,28 @@ public class TeacherServiceImpl implements TeacherService{
 		return true;
 	}
 
+	@Override
+	public TeacherResponse updateTeacher(TeacherRequest data, Integer teacherId) throws NotFoundException {
+
+		Optional<Teacher> teacherOpt = teacherRepository.findById(teacherId);
+		if (teacherOpt.isEmpty()) {
+			throw new NotFoundException("Teacher not found with id: " + teacherId);
+		}
+		Teacher teacher = teacherOpt.get();
+		List<Classroom> classrooms = classroomRepository.findAllById(data.getClassIds());
+		teacher.setName(data.getName());
+		teacher.setEmail(data.getEmail());
+		teacher.setPassword(data.getPassword());
+		teacher.setClassrooms(classrooms);
+		teacherRepository.save(teacher);
+
+		TeacherResponse teacherResponse = new TeacherResponse();
+		teacherResponse.setId(teacher.getId());
+		teacherResponse.setName(teacher.getName());
+		teacherResponse.setEmail(teacher.getEmail());
+		teacherResponse.setPassword(teacher.getPassword());
+		teacherResponse.setClassrooms(teacher.getClassrooms());
+		return teacherResponse;
+	}
+
 }

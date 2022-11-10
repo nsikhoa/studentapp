@@ -4,13 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.sp.studentapp.entity.Teacher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sp.studentapp.exception.NotFoundException;
 import com.sp.studentapp.request.TeacherRequest;
@@ -48,5 +44,15 @@ public class TeacherController {
 			return ResponseEntity.created(null).body(new Response<>("ok", "Create success"));
 		}
 		return ResponseEntity.badRequest().body(new Response<>("error", "Create failed!"));
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Response<TeacherResponse>> updateTeacher(
+			@RequestBody @Valid TeacherRequest data,
+			@PathVariable(name = "id") Integer teacherId) throws NotFoundException {
+
+		var teacher = teacherService.updateTeacher(data, teacherId);
+
+		return ResponseEntity.ok().body(new Response<>("ok", "Update success", teacher, null));
 	}
 }
