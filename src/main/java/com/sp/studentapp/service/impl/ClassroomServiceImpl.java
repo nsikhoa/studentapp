@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,17 @@ import com.sp.studentapp.response.ClassroomResponse;
 import com.sp.studentapp.service.ClassroomService;
 
 @Service
+@RequiredArgsConstructor
 public class ClassroomServiceImpl implements ClassroomService{
 
-	@Autowired
-	private ClassroomRepository classRepo;
+	private final ClassroomRepository classRepo;
 	
 	@Override
 	public List<ClassroomResponse> getAllClass() {
 		List<Classroom> classrooms = classRepo.findAll();
 		List<ClassroomResponse> classResponses = new ArrayList<>();
 		
-		classrooms.stream()
+		classrooms
 			.forEach(classroom -> {
 				ClassroomResponse classRes = new ClassroomResponse();
 				classRes.setId(classroom.getId());

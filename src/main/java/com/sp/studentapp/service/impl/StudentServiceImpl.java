@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.sql.rowset.spi.SyncFactoryException;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,12 @@ import com.sp.studentapp.response.StudentResponse;
 import com.sp.studentapp.service.StudentService;
 
 @Service
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
-	@Autowired
-	private StudentRepository studentRepo;
-	
-	@Autowired
-	private ClassroomRepository classRepo;
+	private final StudentRepository studentRepo;
+
+	private final ClassroomRepository classRepo;
 	
 	@Override
 	public List<StudentResponse> getAllStudents() {
