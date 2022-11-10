@@ -2,6 +2,7 @@ package com.sp.studentapp.controller;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,19 +21,19 @@ import com.sp.studentapp.service.ClassroomService;
 
 @RestController
 @RequestMapping("/api/classroom")
+@RequiredArgsConstructor
 public class ClassroomController {
-	
-	@Autowired
-	private ClassroomService classService;
+
+	private final ClassroomService classService;
 	
 	@GetMapping("")
 	public ResponseEntity<Response<ClassroomResponse>> getAllClassroom() {
-		return ResponseEntity.ok().body(new Response<ClassroomResponse>("ok", "Success", null, classService.getAllClass()));
+		return ResponseEntity.ok().body(new Response<>("ok", "Success", null, classService.getAllClass()));
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Response<ClassroomResponse>> getClassroom(@PathVariable(name = "id") Integer classId) throws ClassroomNotFoundException {
-		return ResponseEntity.ok().body(new Response<ClassroomResponse>("ok", "Success", classService.getClassById(classId), null));
+		return ResponseEntity.ok().body(new Response<>("ok", "Success", classService.getClassById(classId), null));
 	}
 	
 	@PostMapping("")
@@ -48,8 +49,8 @@ public class ClassroomController {
 	public ResponseEntity<Response<ClassroomResponse>> deleteClassroom(@PathVariable(name = "id") Integer classId) throws ClassroomNotFoundException {
 		boolean isDeleted = classService.deleteClassroom(classId);
 		if (isDeleted) {
-			return ResponseEntity.ok().body(new Response<ClassroomResponse>("ok", "Delete success"));
+			return ResponseEntity.ok().body(new Response<>("ok", "Delete success"));
 		}
-		return ResponseEntity.badRequest().body(new Response<ClassroomResponse>("error", "Delete failed!"));
+		return ResponseEntity.badRequest().body(new Response<>("error", "Delete failed!"));
 	}
 }

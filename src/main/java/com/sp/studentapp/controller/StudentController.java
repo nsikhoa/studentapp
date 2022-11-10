@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,16 +24,16 @@ import com.sp.studentapp.service.StudentService;
 
 @RestController
 @RequestMapping("/api/students")
+@RequiredArgsConstructor
 public class StudentController {
 	
-	@Autowired
-	private StudentService studentService;
+	private final StudentService studentService;
 	
 	@GetMapping("")
 	public ResponseEntity<Response<StudentResponse>> getAllStudents() {
 		List<StudentResponse> students = studentService.getAllStudents();
 		
-		return ResponseEntity.ok().body(new Response<StudentResponse>("ok", "Success", null, students)); 
+		return ResponseEntity.ok().body(new Response<>("ok", "Success", null, students));
 	}
 	
 	@GetMapping("/{id}")
@@ -40,7 +41,7 @@ public class StudentController {
 			@PathVariable(name = "id") Integer studentId) throws StudentNotFoundException {
 		var student = studentService.getStudentById(studentId);
 		
-		return ResponseEntity.ok().body(new Response<StudentResponse>("ok", "Success", student, null));
+		return ResponseEntity.ok().body(new Response<>("ok", "Success", student, null));
 	}
 	
 	@PostMapping("")
@@ -56,7 +57,7 @@ public class StudentController {
 	public ResponseEntity<Response<StudentResponse>> updateStudentById(
 			@PathVariable(name = "id") Integer studentId,
 			@RequestBody @Valid StudentRequest data) throws StudentNotFoundException{
-		return ResponseEntity.ok().body(new Response<StudentResponse>("ok", "Update success", studentService.updateStudentById(studentId, data), null));
+		return ResponseEntity.ok().body(new Response<>("ok", "Update success", studentService.updateStudentById(studentId, data), null));
 	}
 	
 	@DeleteMapping("/{id}")
